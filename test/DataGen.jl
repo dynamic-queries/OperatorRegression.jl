@@ -1,5 +1,6 @@
 ## 1D problem
 # Define grid, time parameters
+dims = OneD()
 ninstances = 10
 nx = 100
 nt = 100
@@ -12,13 +13,14 @@ t = tmin : (tmax-tmin)/nt : tmax
 
 # Generate initial conditions
 kernel = SquaredExponential()
-a = GP(x,kernel,ninstances)
+gp = GP(x,kernel)
+a = gp(ninstances,dims)
 
 # Package this into a struct
 method = FiniteDiff()
-dims = OneD()
 solver = wave_problem()
-problem = EnsembleProblem(dims,method,a,x,t)
+state = (x)
+problem = EnsembleProblem(dims,method,a,state,t)
 
 # Send struct to the solver 
 solution = solve(problem,solver) # Returns an ensemble solution
@@ -28,6 +30,7 @@ a,inter,u = munge(solution)
 
 
 ## 2D problem 
+dims = TwoD()
 ninstances = 10
 nx = 20 
 ny = 30
@@ -42,15 +45,15 @@ x = xmin : (xmax - xmin)/nx : xmax
 y = ymin : (ymax - ymin)/ny : ymax 
 t = tmin : (tmax - tmin)/nt : tmax 
 grid = Grid(x,y)
-state = Array(grid)
+state = flatten(grid,dims)
 
 # Generate intial conditions
 kernel = SquaredExponential()
-a = GP(state,kernel,ninstances)
+gp = GP(state,kernel)
+a = gp(ninstances,dims)
 
 # Package into a struct and send it to the solver
 method = FiniteDiff()
-dims = TwoD()
 solver = wave_problem()
 problem = EnsembleProblem(dims,method,a,state,t)
 solution = solve(problem,solver)
@@ -60,6 +63,7 @@ a,inter,u = munge(solution)
 
 
 ## 3D problem 
+dims = ThreeD()
 ninstances = 10
 nx = 10
 ny = 12
@@ -78,15 +82,15 @@ y = ymin : (ymax - ymin)/ny : ymax
 z = zmin ; (zmax - zmin)/nz : zmax
 t = tmin : (tmax - tmin)/nt : tmax
 grid = Grid(x,y,z)
-state = Array(grid)
+state = flatten(grid,dims)
 
 # Get the initial conditions
 kernel = SquaredExponential()
-a = GP(state,kernel,ninstances)
+gp = GP(state,kernel)
+a = gp(ninstances,dims)
 
 # Package this into a solver
 method = FiniteDiff()
-dims = ThreeD()
 solver = wave_problem()
 problem = EnsembleProblem(dims,method,a,state,t)
 solution = solve(problem,solver)

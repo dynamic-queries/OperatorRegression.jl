@@ -1,6 +1,7 @@
-using WaveSurrogates.jl
+using WaveSurrogates
 using Test
 
-@testset "WaveSurrogates.jl.jl" begin
-    # Write your tests here.
+@testset "WaveSurrogates.jl" begin
+    include("DataGen.jl")
+    include("DeepONet/DeepONet.jl")
 end

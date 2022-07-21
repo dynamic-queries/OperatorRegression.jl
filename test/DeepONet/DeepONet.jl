@@ -1,6 +1,3 @@
-include("../../src/DeepONet/DeepONet.jl")
-
-
 begin # Robustness test for the DeeoOpNet learn function
     NDIMS = [1,2,3]
 

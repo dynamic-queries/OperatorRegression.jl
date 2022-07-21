@@ -1,4 +1,4 @@
-name = "WaveSurrogates.jl"
+name = "WaveSurrogates"
 uuid = "92586712-053b-4f00-96af-14c96dfbf319"
 authors = ["Rahul Manavalan"]
 version = "0.1.0"
