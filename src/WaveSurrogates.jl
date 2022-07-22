@@ -7,6 +7,7 @@ module WaveSurrogates
     using NeuralOperators
     using UnPack
     using Random
+    using Plots
 
     include("DataGen.jl")
     export FinteDiff, Spectral, PseudoSpectral
@@ -14,6 +15,8 @@ module WaveSurrogates
     export Grid
     export SquaredExponential
     export GP
+    export flatten, Array
+    export plot, heatmap
 
     include("Solvers.jl")
     export acousticWE
@@ -22,6 +25,6 @@ module WaveSurrogates
     export EnsembleProblem
     export solve, munge
     
-    include("DeepONet/DeepONet.jl")
-    export DeepOpNet, learn
+    include("DeepONet/DeepOpNet.jl")
+    export DeepOpNet, munge!, learn
 end

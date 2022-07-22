@@ -4,8 +4,8 @@
 Solves the acoustic wave equation in One dimension.
 Assumes homogenous dirichlet boundary condition.
 """
-function acousticWE(dims::OneD(),
-                       method::FiniteDiff(),
+function acousticWE(dims::OneD,
+                       method::FiniteDiff,
                        a::Tuple,
                        s::Tuple,
                        t::Union{StepRange,StepRangeLen}
@@ -41,8 +41,8 @@ end
 Solves the acoustic Wave Equation in two dimensions. 
 Assumues homogenous dirichlet boundary conditions.
 """
-function acousticWE(dims::TwoD(),
-    method::FiniteDiff(),
+function acousticWE(dims::TwoD,
+    method::FiniteDiff,
     a::Tuple,
     s::Tuple,
     t::Union{StepRange,StepRangeLen}
