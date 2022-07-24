@@ -7,14 +7,16 @@ Assumes homogenous dirichlet boundary condition.
 function acousticWE(dims::OneD,
                        method::FiniteDiff,
                        a::Tuple,
-                       s::Tuple,
-                       t::Union{StepRange,StepRangeLen}
+                       s::Union{Vector,StepRange,StepRangeLen},
+                       t::Union{StepRange,StepRangeLen,Tuple}
                        )
     function wave!(du,u,p,t)
+        n = Int(length(u)/2)
         c = p[2]
-        dx2 = c/p[1]^2
-        for i=2:length(u)-1
-            du[i] = dx2*(u[i+1]+u[i-1]-2*u[i])
+        dx2 = (c/p[1])^2
+        for i=2:n-1
+            du[i] = u[n+i]
+            du[n+i] = dx2*(u[i+1]+u[i-1]-2*u[i])
         end 
     end 
     
@@ -27,10 +29,10 @@ function acousticWE(dims::OneD,
     # Setup ODE problem
     c = 1.0
     tspan = (t[1],t[end])
-    x = s[1] 
+    x = s 
     dx = x[2]-x[1]
     p = [dx,c]
-    prob = ODEProblem(wave!,a,tspan,p)
+    prob = ODEProblem(wave!,u₀,tspan,p)
     sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t)
     sol
 end 
@@ -45,7 +47,7 @@ function acousticWE(dims::TwoD,
     method::FiniteDiff,
     a::Tuple,
     s::Tuple,
-    t::Union{StepRange,StepRangeLen}
+    t::Union{StepRange,StepRangeLen,Tuple}
     )
 
     # Forcing function 
@@ -54,9 +56,9 @@ function acousticWE(dims::TwoD,
         dy2 = 1/p[2]^2
         cx = p[3]
         cy = p[4] 
-        nx = p[5]
-        ny = p[6]
-        n = nx*ny
+        nx = Int(p[5])
+        ny = Int(p[6]) 
+        n = Int(nx*ny)
 
         for i=2:nx-1
             for j=2:ny-1
