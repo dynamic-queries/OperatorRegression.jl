@@ -8,9 +8,11 @@ module WaveSurrogates
     using UnPack
     using Random
     using Plots
+    using HDF5
+    using TSVD
 
     include("DataGen.jl")
-    export FinteDiff, Spectral, PseudoSpectral
+    export FiniteDiff, Spectral, PseudoSpectral
     export OneD, TwoD, ThreeD
     export Grid
     export SquaredExponential
@@ -23,8 +25,11 @@ module WaveSurrogates
 
     include("EnsembleProblem.jl")
     export EnsembleProblem
-    export solve, munge
+    export solve, Array, write, reduce
     
     include("DeepONet/DeepOpNet.jl")
     export DeepOpNet, munge!, learn
+
+    include("PCANet/PCANet.jl")
+    export PCANet, munge!, learn
 end
