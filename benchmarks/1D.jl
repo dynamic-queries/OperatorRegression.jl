@@ -1,4 +1,6 @@
 using BenchmarkTools
+using Profile
+
 """
     One instance.
     One dimensional problem.
@@ -47,7 +49,7 @@ BenchmarkTools.Trial: 2 samples with 1 evaluation.
 """
 function instance2() 
     dims = OneD()
-    ninstances = 10
+    ninstances = 1
     nx = 1000
     nt = 1
     xmin = 0.0
@@ -64,7 +66,7 @@ function instance2()
     sol
 end
 
-@benchmark solution = instance2()
+@profile solution = instance2()
 
 # For one instance
 """
@@ -80,5 +82,3 @@ BenchmarkTools.Trial: 2 samples with 1 evaluation.
  Memory estimate: 383.19 MiB, allocs estimate: 12390543.
 
 """
-
-# For 10 instances

@@ -81,7 +81,6 @@ function flatten(i::Int,s::Tuple,a::Union{Array,StepRangeLen},::TwoD)
     nx = length(s[1])
     ny = length(s[2])
     n = nx*ny
-    @show n,size(a,2)
     @assert n == size(a,2)
     v = vcat(a[i,:],zeros(n))
     bclocs = vcat(collect(Int,1:nx),collect(Int,(ny-1)+1:(ny-1)+nx),collect(Int,1:ny:n),collect(Int,ny:ny:n))
