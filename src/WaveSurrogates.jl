@@ -9,7 +9,8 @@ module WaveSurrogates
     using Random
     using Plots
     using HDF5
-    using TSVD
+    using BenchmarkTools
+    using ProgressMeter
 
     include("DataGen.jl")
     export FiniteDiff, Spectral, PseudoSpectral

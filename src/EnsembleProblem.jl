@@ -32,7 +32,7 @@ mutable struct EnsembleProblem
         gp = GP(S,kernel)
         u0 = gp(ninstances,dims)
         if typeof(dims) == TwoD
-            u0 = reshape(Array(u0,gp,dims,),(length(u0),:))
+            u0 = reshape(Array(u0,gp,dims,),(size(u0[1],2),:))
         end 
         new(dims,method,ninstances,u0,S,t)
     end 
@@ -45,7 +45,7 @@ mutable struct EnsembleProblem
         gp = GP(S,kernel)
         u0 = gp(ninstances,dims)
         if typeof(dims) == TwoD
-        u0 = reshape(Array(u0,gp,dims,),(length(u0),:))
+        u0 = reshape(Array(u0,gp,dims,),(size(u0[1],2),:))
         end 
         new(dims,FiniteDiff(),ninstances,u0,S,t)
     end 
@@ -81,6 +81,7 @@ function flatten(i::Int,s::Tuple,a::Union{Array,StepRangeLen},::TwoD)
     nx = length(s[1])
     ny = length(s[2])
     n = nx*ny
+    @show n,size(a,2)
     @assert n == size(a,2)
     v = vcat(a[i,:],zeros(n))
     bclocs = vcat(collect(Int,1:nx),collect(Int,(ny-1)+1:(ny-1)+nx),collect(Int,1:ny:n),collect(Int,ny:ny:n))
@@ -90,8 +91,10 @@ end
 function solve(prob::EnsembleProblem,solver)
     sol = EnsembleSolution(prob,solver,prob.ninstances)
     n = prob.ninstances
+    p = Progress(n,1,"Solving Ensemble Problem.",50)
     for i = 1:n
         push!(sol.solutions, solver(prob.dims,prob.method,flatten(i,prob.S,prob.u₀,prob.dims),prob.S,prob.t))
+        next!(p)
     end     
     sol
 end 

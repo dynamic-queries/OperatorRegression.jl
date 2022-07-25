@@ -1,4 +1,5 @@
 using Plots
+using BenchmarkTools
 
 ## 1D 
 begin
@@ -91,9 +92,9 @@ end
 ## 1D Automatic
 begin
     dims = OneD()
-    ninstances = 2
+    ninstances = 10
     nx = 1000
-    nt = 100
+    nt = 1
     xmin = 0.0
     xmax = 1.0
     tmin = 0.0
@@ -125,3 +126,4 @@ begin
     prob = EnsembleProblem(dims,method,s,t,ninstances)
     sol = solve(prob,acousticWE)
 end 
+

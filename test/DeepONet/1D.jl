@@ -16,7 +16,7 @@ print("1D Wave Equation : Operator Regression using DeepONet\n")
 dims = OneD()
 ninstances = 100
 nx = 1000
-nt = 2
+nt = 1 
 xmin = 0.0
 xmax = 1.0
 tmin = 0.0
@@ -30,12 +30,13 @@ prob = EnsembleProblem(dims,method,s,t,ninstances)
 sol = solve(prob,acousticWE)
 
 print("Data Generated! \n")
+print("Writing Data for reference\n")
+write(sol,dims)
+
 raw_data = Array(sol,dims)
 npoints, inputsize, outputsize = metadata(raw_data,dims)
 intersize = 10
 
-print("Writing Data for reference\n")
-write(sol,dims)
 
 # Trunk 
 NL = 5
