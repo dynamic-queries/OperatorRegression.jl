@@ -14,15 +14,15 @@ end
 
 print("1D Wave Equation : Operator Regression using DeepONet\n")
 dims = OneD()
-ninstances = 2
+ninstances = 100
 nx = 1000
-nt = 100
+nt = 2
 xmin = 0.0
 xmax = 1.0
 tmin = 0.0
 tmax = 1.0 
 x = xmin : (xmax-xmin)/nx : xmax
-t = tmin : (tmax-tmin)/nt : tmax
+t = (tmin,tmax)
 method = FiniteDiff()
 s = x 
 print("Generating Data...\n")
@@ -39,7 +39,7 @@ write(sol,dims)
 
 # Trunk 
 NL = 5
-DL = 20
+DL = 1024
 trunk = Chain(Dense(inputsize[1] => DL, gelu),
               Dense(DL => DL, gelu),
               Dense(DL => DL, gelu),
@@ -48,7 +48,7 @@ trunk = Chain(Dense(inputsize[1] => DL, gelu),
 
 # Branch 
 nl = 5
-dl = 20
+dl = 1024
 branch = Chain(Dense(inputsize[2] => dl, gelu),
               Dense(dl => dl, gelu),
               Dense(dl => dl, gelu),
