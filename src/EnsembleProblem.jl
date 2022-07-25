@@ -51,6 +51,10 @@ mutable struct EnsembleProblem
     end 
 end
 
+function Base.show(io::IO, prob::EnsembleProblem)
+    print("Ensemble Problem \n")
+end 
+
 mutable struct EnsembleSolution 
     prob::EnsembleProblem
     solver
@@ -60,6 +64,10 @@ mutable struct EnsembleSolution
     function EnsembleSolution(prob,solver,ninst)
         new(prob,solver,ninst,[])
     end 
+end 
+
+function Base.show(io::IO, sol::EnsembleSolution)
+    print("Ensemble Solution \n")
 end 
 
 function flatten(i::Int,s::Union{Tuple,StepRangeLen},a::Union{Array,StepRangeLen},::OneD)
@@ -88,11 +96,84 @@ function solve(prob::EnsembleProblem,solver)
     sol
 end 
 
-function reduce(sol::EnsembleSolution,nmodes::Int)
+function Base.Array(sol::EnsembleSolution, ::OneD)
+    I = sol.ninstances
+    n = length(sol.prob.S)
+    m = length(sol.prob.t)
 
+    a = zeros(n,I)
+    x = zeros(n,I)
+    t = zeros(m,I)
+    u = zeros(n,m,I)
+
+    for i=1:I
+        a[:,i] = sol.solutions[i].prob.u0[1:Int(end/2)]
+        x[:,i] = collect(sol.prob.S)
+        t[:,i] = collect(sol.prob.t)
+        u[:,:,i] = Array(sol.solutions[i])[1:Int(end/2),:]
+    end 
+
+    (a,x,t,u)
 end 
 
-function write(sol::EnsembleSolution)
+function Base.Array(x::StepRangeLen,y::StepRangeLen)
+    nx = length(x)
+    ny = length(y) 
+    X = zeros(nx,ny)
+    Y = zeros(nx,ny)
+    for i=1:nx
+        for j=1:ny
+            X[i,j] = x[i]
+            Y[i,j] = y[j]
+        end 
+    end 
+    (X,Y)
+end 
 
+function Base.Array(sol::EnsembleSolution, ::TwoD)
+    I = sol.ninstances
+    nx = length(sol.prob.S[1])
+    ny = length(sol.prob.S[2])
+    m = length(sol.prob.t)
+    
+    a = zeros(nx,ny,I)
+    x = zeros(nx,ny,I)
+    y = zeros(nx,ny,I)
+    t = zeros(m,I)
+    u = zeros(nx,ny,m,I)
+    
+    x1,y1 = Array(sol.prob.S[1],sol.prob.S[2])
+    
+    for i=1:I
+        a[:,:,I] = reshape(sol.solutions[i].prob.u0[1:Int(end/2)],(nx,ny))
+        x[:,:,I] = x1
+        y[:,:,I] = y1
+        t[:,I] = collect(sol.prob.t)
+        u[:,:,:,I] = reshape(Array(sol.solutions[i])[1:Int(end/2),:],(nx,ny,:))
+    end 
+
+    (a,(x,y),t,u)
+end 
+
+
+function Base.write(sol::EnsembleSolution,::OneD,fname="1D_Wave_Equation")
+    a,x,t,u = Array(sol,OneD())
+    file = h5open(fname,"w")
+    file["a"] = a
+    file["x"] = x
+    file["t"] = t
+    file["u"] = u
+    close(file)
+end 
+
+function Base.write(sol::EnsembleSolution,::TwoD,fname = "2D_Wave_Equation")
+    a,(x,y),t,u = Array(sol,TwoD())
+    file = h5open(fname,"w")
+    file["a"] = a
+    file["x"] = x
+    file["y"] = y
+    file["t"] = t
+    file["u"] = u
+    close(file)    
 end 
 #=============================================================#

@@ -25,7 +25,7 @@ module WaveSurrogates
 
     include("EnsembleProblem.jl")
     export EnsembleProblem
-    export solve, Array, write, reduce
+    export solve, Array, write
     
     include("DeepONet/DeepOpNet.jl")
     export DeepOpNet, munge!, learn
