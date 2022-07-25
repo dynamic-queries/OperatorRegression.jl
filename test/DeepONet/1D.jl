@@ -3,6 +3,9 @@ using HDF5
 using Plots
 using Flux
 
+
+print("1D Wave Equation using DeepOpNet.\n\n")
+
 function metadata(raw_data,::OneD)
     a,x,t,u = raw_data
     @assert size(a,2) == size(x,2) == size(t,2) == size(u,3)
@@ -18,6 +21,9 @@ function metadata(raw_data,::TwoD)
     a,x,t,u = raw_data
     
 end 
+
+
+print("Reading data ...\n")
 
 begin # Read data
     filename = "/home/dynamic-queries/.julia/dev/WaveSurrogates.jl/data/End_1D_Wave_Equation"
@@ -60,10 +66,11 @@ branch = Chain(Dense(sum(intersize) => dl, gelu),
             )
 
 
+print("Defining Model, Munging Data ... \n")
+
 model = DeepOpNet(trunk, branch, raw_data)
 munge!(model,dims)
-model.input[1]
-model.input[2]
-model.output
+
+print("Learning Model...\n")
 
 learn(model,dims,100)
