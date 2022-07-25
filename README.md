@@ -10,19 +10,19 @@
 Is a package for Benchmarking different surrogate models for equations that fall under the umbrella of the Wave Equations based on the paradigm of Operator Regression. This includes features such as: 
 
 ## Data generation
-- High Performance solvers using Method of lines for the
+- Method of Lines solvers for: 
     - 1D linear, non-linear Acoustic Wave Equation
     - 2D linear, non-linear Acoustic Wave Equation
-    - 1D non-linear Elastic Wave Equation
-    - 2D non-linear Elastic Wave Equation
+    - 1D non-linear Elastic Wave Equation (to be added soon.)
+    - 2D non-linear Elastic Wave Equation (to be added soon.)
 
 - 1D and 2D Gaussian Sampling routines for generating an ensemble of initial conditions.
 
-- A native Julia Type - "Ensemble Problem" that solves the specified initial value problems using the high performance solvers, writing out the generated data,... 
+- A Julia Type - "Ensemble Problem" that solves the specified initial value problems, writing out the generated data,... 
 
 ## Operator Regression Algorithms
 
-Operator Regresison encompasses several algorithms that has been proposed in literature. In this package, focus is placed on .\
+Operator Regresison encompasses several algorithms that has been proposed in literature. In this package, focus is placed on and will eventually contain: \
     - *Fourier Neural Operators* - https://openreview.net/forum?id=c8P9NQVtmnO \
     - *Geo-Fourier Neural Operators* - https://arxiv.org/abs/2207.05209 \
     - *DeepONets* - https://www.nature.com/articles/s42256-021-00302-5 \
@@ -36,10 +36,8 @@ Operator Regresison encompasses several algorithms that has been proposed in lit
 The cost-accuracy tradeoff of each of these algorithms for the Wave equations(ones specified and more to be added) is evaluated based on the following criteria: 
 
     - Type of sampling the manifold. 
-    - Number of samples 
-    - Time for data generation 
-    - Time to train 
-    - Time for evaluation 
+    - Number of samples  
+    - Time to train  
     - Relative error (with conventional solver)
 
 Further metrics may be added in the future for the evaluation.
