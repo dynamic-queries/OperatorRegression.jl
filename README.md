@@ -1,5 +1,11 @@
-
 # WaveSurrogates.jl
+
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://dynamic-queries.github.io/WaveSurrogates.jl.jl/stable/)
+[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://dynamic-queries.github.io/WaveSurrogates.jl.jl/dev/)
+[![Build Status](https://github.com/dynamic-queries/WaveSurrogates.jl.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/dynamic-queries/WaveSurrogates.jl.jl/actions/workflows/CI.yml?query=branch%3Amain)
+[![Build Status](https://travis-ci.com/dynamic-queries/WaveSurrogates.jl.jl.svg?branch=main)](https://travis-ci.com/dynamic-queries/WaveSurrogates.jl.jl)
+
+
 
 Is a package for Benchmarking different surrogate models for equations that fall under the umbrella of the Wave Equations based on the paradigm of Operator Regression. This includes features such as: 
 
@@ -38,7 +44,3 @@ The cost-accuracy tradeoff of each of these algorithms for the Wave equations(on
 
 Further metrics may be added in the future for the evaluation.
 
-[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://dynamic-queries.github.io/WaveSurrogates.jl.jl/stable/)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://dynamic-queries.github.io/WaveSurrogates.jl.jl/dev/)
-[![Build Status](https://github.com/dynamic-queries/WaveSurrogates.jl.jl/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/dynamic-queries/WaveSurrogates.jl.jl/actions/workflows/CI.yml?query=branch%3Amain)
-[![Build Status](https://travis-ci.com/dynamic-queries/WaveSurrogates.jl.jl.svg?branch=main)](https://travis-ci.com/dynamic-queries/WaveSurrogates.jl.jl)
