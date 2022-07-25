@@ -88,7 +88,7 @@ function learn(op::DeepOpNet, ::OneD,  nepochs = 10,learning_rate=0.01,ϵ=[0.7,0
     @show size(inputval)
 
     # Optimization
-    opt = Flux.Adam(learning_rate)
+    opt = Flux.ADAM(learning_rate)
     loss(x,y,inter) = Flux.Losses.mse(op(x,inter),reshape(y,(:,)))
     evalcb() = @show(loss(inputtest,outputtest,intertest))
     data = [(inputtrain,outputtrain,intertrain)]

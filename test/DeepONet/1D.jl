@@ -58,7 +58,9 @@ branch = Chain(Dense(inputsize[2] => dl, gelu),
 # DeepOpNet
 print("Setting Up Model \n")
 model = DeepOpNet(trunk, branch, raw_data)
+
 print("Rearranging Data \n")
 munge!(model,dims)
+
 print("Training Model \n")
 validation_set = learn(model,dims)
