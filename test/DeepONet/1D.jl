@@ -3,6 +3,8 @@ using HDF5
 using Plots
 using Flux
 
+using Pkg
+Pkg.activate("../../.")
 
 print("1D Wave Equation using DeepOpNet.\n\n")
 
