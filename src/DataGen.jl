@@ -3,6 +3,11 @@ abstract type Dimension end
 struct OneD <: Dimension end
 struct TwoD <: Dimension end  
 struct ThreeD <: Dimension end 
+
+Base.Int(::OneD) = Int(1)
+Base.Int(::TwoD) = Int(2)
+Base.Int(::ThreeD) = Int(3)
+
 #=============================================================#
 
 #=============================================================#
