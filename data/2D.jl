@@ -1,3 +1,5 @@
+using WaveSurrogates
+
 begin
     dims = TwoD()
     ninstances = 10

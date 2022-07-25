@@ -1,4 +1,6 @@
 ## 1D Automatic
+using WaveSurrogates
+
 begin
     dims = OneD()
     ninstances = 10
