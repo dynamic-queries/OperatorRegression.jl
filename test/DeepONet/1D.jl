@@ -43,15 +43,15 @@ raw_data = (A,X,T,U)
 ninstances, inputsize, intersize , outputsize = metadata(raw_data,dims)
 
 # Model
-DL = 20
-interwidth = 40 
+DL = 1024
+interwidth = 2048 
 trunk = Chain(Dense(inputsize[1] => DL, gelu),
               Dense(DL => DL, gelu),
               Dense(DL => DL, gelu),
               Dense(DL => DL, gelu),
               Dense(DL => interwidth, gelu)
             )
-dl = 20
+dl = 1024
 branch = Chain(Dense(sum(intersize) => dl, gelu),
                Dense(dl => dl, gelu),
                Dense(dl => dl, gelu),
