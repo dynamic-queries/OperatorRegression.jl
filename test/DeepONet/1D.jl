@@ -1,67 +1,69 @@
-using Flux
 using WaveSurrogates
-using WaveSurrogates:write
+using HDF5
+using Plots
+using Flux
 
-function metadata(raw,::OneD)
-    a,x,t,u = raw
+function metadata(raw_data,::OneD)
+    a,x,t,u = raw_data
     @assert size(a,2) == size(x,2) == size(t,2) == size(u,3)
-    npoints = size(a,2)
-    inputsize = [size(a,1),2]
-    outputsize = 1  
-    npoints, inputsize, outputsize 
+    I = size(a,2)
+    @assert size(a,1) == size(x,1)
+    inputsize = [size(a,1),1]
+    intersize = [1,1]
+    outputsize = 1
+    I,inputsize,intersize,outputsize
+end 
+
+function metadata(raw_data,::TwoD)
+    a,x,t,u = raw_data
+    
+end 
+
+begin # Read data
+    filename = "/home/dynamic-queries/.julia/dev/WaveSurrogates.jl/data/End_1D_Wave_Equation"
+    file = h5open(filename)
+    a = read(file["a"])
+    x = read(file["x"])
+    t = read(file["t"])
+    u = read(file["u"])
+    close(file)
 end 
 
 
-print("1D Wave Equation : Operator Regression using DeepONet\n")
+# Reduce dataset
+I = 10
+A = a[:,1:I]
+X = x[:,1:I]
+T = t[:,1:I]
+U = u[:,:,1:I]
+
+## Metadata
 dims = OneD()
-ninstances = 100
-nx = 1000
-nt = 1 
-xmin = 0.0
-xmax = 1.0
-tmin = 0.0
-tmax = 1.0 
-x = xmin : (xmax-xmin)/nx : xmax
-t = (tmin,tmax)
-method = FiniteDiff()
-s = x 
-print("Generating Data...\n")
-prob = EnsembleProblem(dims,method,s,t,ninstances)
-sol = solve(prob,acousticWE)
+raw_data = (A,X,T,U)
+ninstances, inputsize, intersize , outputsize = metadata(raw_data,dims)
 
-print("Data Generated! \n")
-print("Writing Data for reference\n")
-write(sol,dims)
-
-raw_data = Array(sol,dims)
-npoints, inputsize, outputsize = metadata(raw_data,dims)
-intersize = 10
-
-
-# Trunk 
-NL = 5
-DL = 1024
+# Model
+DL = 20
+interwidth = 40 
 trunk = Chain(Dense(inputsize[1] => DL, gelu),
               Dense(DL => DL, gelu),
               Dense(DL => DL, gelu),
               Dense(DL => DL, gelu),
-              Dense(DL => intersize, gelu))
+              Dense(DL => interwidth, gelu)
+            )
+dl = 20
+branch = Chain(Dense(sum(intersize) => dl, gelu),
+               Dense(dl => dl, gelu),
+               Dense(dl => dl, gelu),
+               Dense(dl => dl, gelu),
+               Dense(dl => interwidth, gelu)
+            )
 
-# Branch 
-nl = 5
-dl = 1024
-branch = Chain(Dense(inputsize[2] => dl, gelu),
-              Dense(dl => dl, gelu),
-              Dense(dl => dl, gelu),
-              Dense(dl => dl, gelu),
-              Dense(dl => intersize, gelu))
 
-# DeepOpNet
-print("Setting Up Model \n")
 model = DeepOpNet(trunk, branch, raw_data)
-
-print("Rearranging Data \n")
 munge!(model,dims)
+model.input[1]
+model.input[2]
+model.output
 
-print("Training Model \n")
-validation_set = learn(model,dims)
+learn(model,dims,100)

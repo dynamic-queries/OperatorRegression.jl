@@ -4,5 +4,6 @@ using Test
 @testset "WaveSurrogates.jl" begin
     include("GP.jl")
     include("DataGen.jl")
-    include("DeepONet/DeepONet.jl")
+    include("EnsembleProblem.jl")
+    include("IO.jl")
 end

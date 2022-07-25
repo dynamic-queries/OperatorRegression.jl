@@ -2,9 +2,9 @@ using WaveSurrogates
 
 begin
     dims = TwoD()
-    ninstances = 10
-    nx = 100
-    ny = 100
+    ninstances = 100
+    nx = 50
+    ny = 50
     nt = 100
     xmin = 0.0
     xmax = 1.0

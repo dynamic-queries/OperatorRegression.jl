@@ -3,7 +3,7 @@ using WaveSurrogates
 
 begin
     dims = OneD()
-    ninstances = 10
+    ninstances = 100
     nx = 1000
     nt = 100
     xmin = 0.0
