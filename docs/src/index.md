@@ -1,10 +1,6 @@
-```@meta
-CurrentModule = WaveSurrogates
-```
-
 # WaveSurrogates.jl
 
-Is a package for Benchmarking different surrogate models for equations that fall under the Umbrella of the Wave Equations based on the paradigm of Operator Regression. This includes features such as: 
+Is a package for Benchmarking different surrogate models for equations that fall under the umbrella of the Wave Equations based on the paradigm of Operator Regression. This includes features such as: 
 
 ## Data generation
 - High Performance solvers using Method of lines for the
@@ -19,26 +15,33 @@ Is a package for Benchmarking different surrogate models for equations that fall
 
 ## Operator Regression Algorithms
 
-Operator Regresison encompasses several algorithms that has been proposed in literature. In this package, focus is placed on .
-    - Fourier Neural Operators - https://openreview.net/forum?id=c8P9NQVtmnO 
-    - Geo-Fourier Neural Operators - https://arxiv.org/abs/2207.05209 
-    - DeepONets - https://www.nature.com/articles/s42256-021-00302-5 
-    - PCA Net - 
-    - PARA Net - https://arxiv.org/abs/2203.13181
-    - Operator Inference (from the Wilcox group) - https://arxiv.org/abs/1912.08177
-    - PDE Net with Diffusion Maps - https://www.nature.com/articles/s41467-022-30628-6 
+Operator Regresison encompasses several algorithms that has been proposed in literature. In this package, focus is placed on .\
+    - *Fourier Neural Operators* - https://openreview.net/forum?id=c8P9NQVtmnO \
+    - *Geo-Fourier Neural Operators* - https://arxiv.org/abs/2207.05209 \
+    - *DeepONets* - https://www.nature.com/articles/s42256-021-00302-5 \
+    - *PCA Net* - \
+    - *PARA Net* - https://arxiv.org/abs/2203.13181 \
+    - *Operator Inference* (from the Wilcox group) - https://arxiv.org/abs/1912.08177 \
+    - *PDE Net with Diffusion Maps* - https://www.nature.com/articles/s41467-022-30628-6 
 
 ## Benchmarks
 
 The cost-accuracy tradeoff of each of these algorithms for the Wave equations(ones specified and more to be added) is evaluated based on the following criteria: 
+
     - Type of sampling the manifold. 
-    - Number of samples
-    - Time for data generation
-    - Time to train
-    - Time for evaluation
+    - Number of samples 
+    - Time for data generation 
+    - Time to train 
+    - Time for evaluation 
     - Relative error (with conventional solver)
 
 Further metrics may be added in the future for the evaluation.
+
+
+
+```@meta
+CurrentModule = WaveSurrogates
+```
 
 Documentation for [WaveSurrogates.jl](https://github.com/dynamic-queries/WaveSurrogates.jl).
 
