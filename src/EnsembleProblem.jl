@@ -88,10 +88,6 @@ function solve(prob::EnsembleProblem,solver)
     sol
 end 
 
-function Base.Array(sol::EnsembleSolution)
-
-end 
-
 function reduce(sol::EnsembleSolution,nmodes::Int)
 
 end 

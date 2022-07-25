@@ -21,28 +21,6 @@ function metadata(raw,::OneD)
     npoints, inputsize, outputsize 
 end 
 
-function generate_data(::Random,::TwoD)
-    I = 10
-    nx = 20
-    ny = 22
-    nt = 10
-    
-    a = rand(nx,ny,I)
-    x = rand(nx,ny,I)
-    t = rand(nt,I)
-    u = rand(nx,ny,nt,I)
-
-    a,x,t,u
-end 
-
-function metadata(raw,::TwoD)
-    a,x,t,u = raw
-    @assert size(a,3) == size(x,3) == size(t,2) == size(u,4)
-    npoints = size(a,3)
-    inputsize = [(size(a,1),size(a,2)),3]
-    outputsize = 1
-    npoints,inputsize,outputsize
-end 
 
 #----------------------------------------------------#
 # 1D problem

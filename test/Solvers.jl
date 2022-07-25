@@ -4,7 +4,7 @@ using Plots
 begin
     # Define grid, time parameters
     dims = OneD()
-    ninstances = 2
+    ninstances = 10
     nx = 1000
     nt = 100
     xmin = 0.0
