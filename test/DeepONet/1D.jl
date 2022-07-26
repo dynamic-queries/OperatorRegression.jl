@@ -2,7 +2,7 @@ using WaveSurrogates
 using HDF5
 using Plots
 using Flux
-
+using BSON:@save 
 
 
 print("1D Wave Equation using DeepOpNet.\n\n")
@@ -73,15 +73,15 @@ size(A)
 
 
 # Model
-DL = 128
-interwidth = 128 
+DL = 2048
+interwidth = 2048 
 trunk = Chain(Dense(inputsize[1] => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => interwidth, relu)
             )
-dl = 32
+dl = 512
 branch = Chain(Dense(sum(intersize) => dl, relu),
                Dense(dl => dl, relu),
                Dense(dl => dl, relu),
@@ -100,12 +100,15 @@ print("Learning Model...\n")
 validation = learn(model,dims,10,1e-5)
 validation = learn(model,dims,40,1e-5)
 validation = learn(model,dims,1e3,1e-5)
-validation = learn(model,dims,1e3,1e-5)
+
+print("Saving Model \n")
+@save "1D-Wave" model
+
 
 
 using LinearAlgebra
-
 error = validation["output"] - reshape(model(validation["input"],validation["inter"]),(1,:))
 scatter(error[1,:])
-
-norm(error)
+savefig("error-one-instance.png")
+print("Computing Error \n")
+@show norm(error)
