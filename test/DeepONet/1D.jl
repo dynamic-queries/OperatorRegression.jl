@@ -57,14 +57,11 @@ end
 using TSVD
 using Plots
 
-I = 10
+I = 20
 
 # Reduce dataset
 A,X,T,U = redact(a,x,t,u,I)
 # A,X,T,U,b = reduce(a,x,t,u,I,nr)
-
-A
-U
 
 ## Metadata
 dims = OneD()
@@ -72,15 +69,15 @@ raw_data = (A,X,T,U)
 ninstances, inputsize, intersize , outputsize = metadata(raw_data,dims)
 
 # Model
-DL = 32
-interwidth = 32 
+DL = 64
+interwidth = 64 
 trunk = Chain(Dense(inputsize[1] => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => interwidth, relu)
             )
-dl = 32
+dl = 64
 branch = Chain(Dense(sum(intersize) => dl, relu),
                Dense(dl => dl, relu),
                Dense(dl => dl, relu),
@@ -101,20 +98,16 @@ model.output = model.output[:,1:k]
 
 print("Learning Model...\n")
 
-validation = learn(model,dims,10,1e-2)
+validation = learn(model,dims,10,1e-3)
 validation = learn(model,dims,40,1e-3)
 validation = learn(model,dims,100,1e-3)
 
 print("Saving Model \n")
-@save "1D-Wave" model
+@save "1D-Wave.bson" model
 
-using LinearAlgebra
-error = validation["output"] - reshape(model(validation["input"],validation["inter"]),(1,:))
 out = model(validation["input"][:,1:10],validation["inter"][:,1:10])
 trueout = validation["output"][:,1:10]
-scatter(out)
-scatter!(trueout[1,:])
+scatter(out,label="eval")
+scatter!(trueout[1,:],label="truth")
 savefig("true_vs_modelled.png")
 print("Computing Error \n")
-@show norm(error)
-
