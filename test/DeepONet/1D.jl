@@ -3,8 +3,7 @@ using HDF5
 using Plots
 using Flux
 
-using Pkg
-Pkg.activate(".")
+
 
 print("1D Wave Equation using DeepOpNet.\n\n")
 
@@ -33,6 +32,15 @@ function reduce(a,x,t,u,I,nr)
     A,X,T,U,b
 end 
 
+function redact(a,x,t,u,I)
+    A = a[:,1:I]
+    X = x[:,1:I]
+    T = t[:,1:I]
+    U = u[:,:,1:I]
+
+    A,X,T,U
+end 
+
 print("Reading data ...\n")
 
 begin # Read data
@@ -49,11 +57,11 @@ end
 using TSVD
 using Plots
 
-I = 100
+I = 1
 
 # Reduce dataset
-nr = 50
-A,X,T,U,b = reduce(a,x,t,u,I,nr)
+A,X,T,U = redact(a,x,t,u,I)
+# A,X,T,U,b = reduce(a,x,t,u,I,nr)
 
 
 ## Metadata
@@ -61,17 +69,19 @@ dims = OneD()
 raw_data = (A,X,T,U)
 ninstances, inputsize, intersize , outputsize = metadata(raw_data,dims)
 
+size(A)
+
 
 # Model
-DL = 200
-interwidth = 200 
+DL = 128
+interwidth = 128 
 trunk = Chain(Dense(inputsize[1] => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => interwidth, relu)
             )
-dl = 200
+dl = 32
 branch = Chain(Dense(sum(intersize) => dl, relu),
                Dense(dl => dl, relu),
                Dense(dl => dl, relu),
@@ -87,9 +97,15 @@ munge!(model,dims)
 
 print("Learning Model...\n")
 
-validation = learn(model,dims,100,1e-3)
+validation = learn(model,dims,10,1e-5)
+validation = learn(model,dims,40,1e-5)
+validation = learn(model,dims,1e3,1e-5)
+validation = learn(model,dims,1e3,1e-5)
+
 
 using LinearAlgebra
 
 error = validation["output"] - reshape(model(validation["input"],validation["inter"]),(1,:))
+scatter(error[1,:])
+
 norm(error)

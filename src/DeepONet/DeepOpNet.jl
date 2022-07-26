@@ -37,6 +37,7 @@ function munge!(op::DeepOpNet,::OneD)
     input2 = zeros(2,st[1]*sx[1]*I)
     output = zeros(1,st[1]*sx[1]*I)
     input1 = zeros(sa[1],st[1]*sx[1]*I)
+
     o::Int = 1
     for j=1:I
         for i=1:st[1]
@@ -50,7 +51,14 @@ function munge!(op::DeepOpNet,::OneD)
                 o += 1
             end     
         end
-    end 
+    end
+
+    # Shuffle data
+    P = randperm(size(input1,2))
+    input1 = input1[:,P]
+    input2 = input2[:,P]
+    output = output[:,P]
+    
     op.input = [input1,input2]
     op.output = output
     nothing
