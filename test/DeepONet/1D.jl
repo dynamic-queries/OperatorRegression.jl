@@ -100,7 +100,7 @@ print("Learning Model...\n")
 
 validation = learn(model,dims,10,1e-3)
 validation = learn(model,dims,40,1e-3)
-validation = learn(model,dims,100,1e-3)
+validation = learn(model,dims,1e3,1e-3)
 
 print("Saving Model \n")
 @save "1D-Wave.bson" model
