@@ -44,7 +44,7 @@ end
 print("Reading data ...\n")
 
 begin # Read data
-    filename = "/home/dynamic-queries/.julia/dev/WaveSurrogates.jl/data/End_1D_Wave_Equation"
+    filename = "/dss/dsshome1/lxc0C/ge96gak2/SciML/WaveSurrogates.jl/data/End_1D_Wave_Equation"
     file = h5open(filename)
     a = read(file["a"])
     x = read(file["x"])
@@ -68,9 +68,6 @@ A,X,T,U = redact(a,x,t,u,I)
 dims = OneD()
 raw_data = (A,X,T,U)
 ninstances, inputsize, intersize , outputsize = metadata(raw_data,dims)
-
-size(A)
-
 
 # Model
 DL = 2048
