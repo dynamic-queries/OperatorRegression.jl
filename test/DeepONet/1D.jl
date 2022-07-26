@@ -44,7 +44,7 @@ end
 print("Reading data ...\n")
 
 begin # Read data
-    filename = "/dss/dsshome1/lxc0C/ge96gak2/SciML/WaveSurrogates.jl/data/End_1D_Wave_Equation"
+    filename = "data/1D_Wave_Equation"
     file = h5open(filename)
     a = read(file["a"])
     x = read(file["x"])
@@ -57,12 +57,14 @@ end
 using TSVD
 using Plots
 
-I = 1
+I = 10
 
 # Reduce dataset
 A,X,T,U = redact(a,x,t,u,I)
 # A,X,T,U,b = reduce(a,x,t,u,I,nr)
 
+A
+U
 
 ## Metadata
 dims = OneD()
@@ -70,15 +72,15 @@ raw_data = (A,X,T,U)
 ninstances, inputsize, intersize , outputsize = metadata(raw_data,dims)
 
 # Model
-DL = 2048
-interwidth = 2048 
+DL = 32
+interwidth = 32 
 trunk = Chain(Dense(inputsize[1] => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => DL, relu),
               Dense(DL => interwidth, relu)
             )
-dl = 512
+dl = 32
 branch = Chain(Dense(sum(intersize) => dl, relu),
                Dense(dl => dl, relu),
                Dense(dl => dl, relu),
@@ -92,20 +94,27 @@ print("Defining Model, Munging Data ... \n")
 model = DeepOpNet(trunk, branch, raw_data)
 munge!(model,dims)
 
+k = 10000
+model.input[1] = model.input[1][:,1:k]
+model.input[2] = model.input[2][:,1:k]
+model.output = model.output[:,1:k]
+
 print("Learning Model...\n")
 
-validation = learn(model,dims,10,1e-5)
-validation = learn(model,dims,40,1e-5)
-validation = learn(model,dims,1e3,1e-5)
+validation = learn(model,dims,10,1e-2)
+validation = learn(model,dims,40,1e-3)
+validation = learn(model,dims,100,1e-3)
 
 print("Saving Model \n")
 @save "1D-Wave" model
 
-
-
 using LinearAlgebra
 error = validation["output"] - reshape(model(validation["input"],validation["inter"]),(1,:))
-scatter(error[1,:])
-savefig("error-one-instance.png")
+out = model(validation["input"][:,1:10],validation["inter"][:,1:10])
+trueout = validation["output"][:,1:10]
+scatter(out)
+scatter!(trueout[1,:])
+savefig("true_vs_modelled.png")
 print("Computing Error \n")
 @show norm(error)
+
