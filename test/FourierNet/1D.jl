@@ -7,14 +7,8 @@ a,x,t,u = read(file["a"]),read(file["x"]),read(file["t"]),read(file["u"])
 raw_data = (a,x,t,u)
 
 # Conv Operator
-
-size(a) 
-
-size(x) 
-
-size(t) 
-
-size(u)
+nmodes = 14
+inputsizes = (2,size(a,1),size(a,2))
 
 
 # FNO Operator

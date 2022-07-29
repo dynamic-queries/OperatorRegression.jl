@@ -1,9 +1,9 @@
 function complex_init(inputsize,outputsize)
-
+    rand(ComplexF64,inputsize,outputsize)
 end 
 
 function complex_init(inputsize,outputsize,nmodes)
-
+    rand(ComplexF64,inputsize,outputsize,nmodes)
 end 
 
 mutable struct ConvOp1D <: AbstractConvOperator
