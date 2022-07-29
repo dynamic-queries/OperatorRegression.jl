@@ -1,7 +1,7 @@
 ## 1D Automatic
 using WaveSurrogates
 
-begin
+begin # Time series
     dims = OneD()
     ninstances = 100
     nx = 1000
@@ -9,7 +9,7 @@ begin
     xmin = 0.0
     xmax = 1.0
     tmin = 0.0
-    tmax = 1.0 
+    tmax = 5.0 
     x = xmin : (xmax-xmin)/nx : xmax
     t = tmin : (tmax-tmin)/nt : tmax
     method = FiniteDiff()
