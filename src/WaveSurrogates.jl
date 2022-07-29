@@ -11,6 +11,8 @@ module WaveSurrogates
     using HDF5
     using BenchmarkTools
     using ProgressMeter
+    using FFTW
+    using Tullio
 
     include("DataGen.jl")
     export FiniteDiff, Spectral, PseudoSpectral
@@ -30,6 +32,9 @@ module WaveSurrogates
     
     include("DeepONet/DeepOpNet.jl")
     export DeepOpNet, munge!, learn
+
+    include("FourierNet/FNO.jl")
+    include("FourierNet/1D.jl")
 
     include("PCANet/PCANet.jl")
     export PCANet, munge!, learn

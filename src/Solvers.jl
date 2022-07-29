@@ -33,7 +33,11 @@ function acousticWE(dims::OneD,
     dx = x[2]-x[1]
     p = [dx,c]
     prob = ODEProblem(wave!,u₀,tspan,p)
-    sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t)
+    if(typeof(t) == Tuple)
+        sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t[2])
+    else 
+        sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t)
+    end 
     sol
 end 
 
@@ -88,6 +92,10 @@ function acousticWE(dims::TwoD,
     ny = length(y) 
     p = [dx,dy,cx,cy,nx,ny]
     prob = ODEProblem(wave!,u₀,tspan,p)
-    sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t)
+    if(typeof(t) == Tuple)
+        sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t[2])
+    else 
+        sol = OrdinaryDiffEq.solve(prob,TRBDF2(),saveat=t)
+    end 
     sol
 end 
