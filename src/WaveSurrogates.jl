@@ -35,6 +35,8 @@ module WaveSurrogates
 
     include("FourierNet/FNO.jl")
     include("FourierNet/1D.jl")
+    export TimeDependent, TimeIndependent
+    export FNO1D, munge!, learn
 
     include("PCANet/PCANet.jl")
     export PCANet, munge!, learn
